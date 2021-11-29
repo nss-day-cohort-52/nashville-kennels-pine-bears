@@ -18,6 +18,7 @@ export const Animal = ({ animal, syncAnimals,
     const history = useHistory()
     const { animalId } = useParams()
     const { resolveResource, resource: currentAnimal } = useResourceResolver()
+    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
@@ -29,6 +30,10 @@ export const Animal = ({ animal, syncAnimals,
             registerOwners(owners)
         }
     }, [owners])
+
+    useEffect(() => {
+        OwnerRepository.getAll().then(setUsers)
+    }, [])
 
     const getPeople = () => {
         return AnimalOwnerRepository
@@ -51,6 +56,7 @@ export const Animal = ({ animal, syncAnimals,
                 })
         }
     }, [animalId])
+
 
     return (
         <>
@@ -84,7 +90,18 @@ export const Animal = ({ animal, syncAnimals,
                         <section>
                             <h6>Caretaker(s)</h6>
                             <span className="small">
-                                Unknown
+                                {
+                                    currentAnimal?.animalCaretakers?.map(caretaker => {
+                                        const foundCaretakers = users.filter(user => {
+                                            return user.id === caretaker.userId
+                                        })
+                                        return (
+                                            foundCaretakers.map(c => {
+                                                return <div key={c.id}>{c.name}</div>
+                                            })
+                                        )
+                                    })
+                                }
                             </span>
 
 
@@ -98,7 +115,7 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
-                                        onChange={() => {}} >
+                                        onChange={() => { }} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner
                                         </option>
@@ -135,8 +152,8 @@ export const Animal = ({ animal, syncAnimals,
                                 ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {}) // Remove animal
-                                        .then(() => {}) // Get all animals
+                                        .then(() => { }) // Remove animal
+                                        .then(() => { }) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
