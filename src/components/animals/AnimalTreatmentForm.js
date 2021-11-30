@@ -12,9 +12,10 @@ export const AnimalTreatmentForm = () => {
     const constructNewAnimalTreatment = evt => {
         evt.preventDefault()
         const aId = parseInt(animalId)
+        const des = description
 
-        if (aId === 0) {
-            window.alert("Please select a caretaker")
+        if (aId === 0 || des === "") {
+            window.alert("Please fill out all fields")
         } else {
             const treatment = {
                 animalId: parseInt(animalId),
@@ -60,25 +61,9 @@ export const AnimalTreatmentForm = () => {
                 />
 
             </div>
-
-            {/* <div className="form-group">
-                <label htmlFor="employee">Make appointment with caretaker</label>
-                <select
-                    defaultValue=""
-                    name="employee"
-                    id="employeeId"
-                    className="form-control"
-                    // onChange={e => setEmployeeId(e.target.value)}
-                >
-                    <option value="">Select an employee</option>
-
-                    ))
-                </select>
-            </div> */}
-            
+           
             <button type="submit"
                 onClick={constructNewAnimalTreatment}
-                // disabled={saveEnabled}
                 className="btn btn-primary"> Submit </button>
         </form>
     )
