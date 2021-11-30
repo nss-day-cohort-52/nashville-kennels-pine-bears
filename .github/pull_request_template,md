@@ -1,0 +1,12 @@
+Issue ticket(s): 
+
+New file(s): 
+
+Modified File(s): Animal.js in the animals direct
+
+Modifications:
+
+Steps to test:
+While in the terminal, use git fetch --all in the root directory of this repo
+Checkout out to al-initialBranch
+Serve the react app up in the browser using npm start on the root directory of this branch
