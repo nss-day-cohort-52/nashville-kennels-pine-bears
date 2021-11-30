@@ -15,10 +15,16 @@ export default ({ employee }) => {
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
     const [isEmployee, setAuth] = useState(false)
+    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
     })
+
+    useEffect(() => {
+        EmployeeRepository.getAll()
+        .then(setUsers)
+    }, [])
 
     useEffect(() => {
         if (employeeId) {

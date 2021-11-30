@@ -32,7 +32,8 @@ export const Animal = ({ animal, syncAnimals,
     }, [owners])
 
     useEffect(() => {
-        OwnerRepository.getAll().then(setUsers)
+        OwnerRepository.getAll()
+        .then(setUsers)
     }, [])
 
     const getPeople = () => {
@@ -52,7 +53,8 @@ export const Animal = ({ animal, syncAnimals,
 
             AnimalOwnerRepository.getOwnersByAnimal(animalId).then(d => setPeople(d))
                 .then(() => {
-                    OwnerRepository.getAllCustomers().then(registerOwners)
+                    OwnerRepository.getAllCustomers()
+                    .then(registerOwners)
                 })
         }
     }, [animalId])
