@@ -15,16 +15,10 @@ export default ({ employee }) => {
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
     const [isEmployee, setAuth] = useState(false)
-    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
     })
-
-    useEffect(() => {
-        EmployeeRepository.getAll()
-        .then(setUsers)
-    }, [])
 
     useEffect(() => {
         if (employeeId) {
@@ -61,16 +55,10 @@ export default ({ employee }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length} animals
+                                Caring for {resource.animals?.length} animals 
                             </section>
                             <section>
-                            {/* Working at {
-                                resource.locations.map(
-                                    (location) => {
-                                        return locations.location.name
-                                    }
-                                )
-                            } */}
+                            Working at{resource.locations?.map((l)=>{return <p>{l.location.name}</p>})}
                             </section>
                         </>
                         : ""
