@@ -6,15 +6,13 @@ import "./EmployeeList.css"
 
 export default (props) => {
     const [emps, setEmployees] = useState([])
-    const [employees, fireEmployees] = useState([])
 
     const syncEmployees = () => {
-        EmployeeRepository.getAll().then(data => fireEmployees(data))
+        EmployeeRepository.getAll().then(setEmployees)
     }
 
     useEffect(
         () => {
-            EmployeeRepository.getAll().then(setEmployees)
             syncEmployees()
         }, []
     )

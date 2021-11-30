@@ -70,7 +70,6 @@ export default ({ employee, syncEmployees }) => {
                         ? <button className="btn--fireEmployee" onClick={() => {
                             EmployeeRepository
                                 .delete(resource.id)
-                                .then(() => { EmployeeRepository.delete(resource.id) }) // Remove employee
                                 .then(() => { syncEmployees() }) // Get all employees
                         }}>Fire</button>
                         : ""
