@@ -55,16 +55,10 @@ export default ({ employee }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length} animals
+                                Caring for {resource.animals?.length} animals 
                             </section>
                             <section>
-                            {/* Working at {
-                                resource.locations.map(
-                                    (location) => {
-                                        return locations.location.name
-                                    }
-                                )
-                            } */}
+                            Working at{resource.locations?.map((l)=>{return <p>{l.location.name}</p>})}
                             </section>
                         </>
                         : ""
