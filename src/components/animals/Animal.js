@@ -170,13 +170,6 @@ export const Animal = ({ animal, syncAnimals,
                                 : ""
                         }
 
-                                                {
-                            isEmployee
-                                ? <button className="btn btn-warning mt-3 form-control small" onClick={() => {history.push(`./animals/treatments`)}}
-                                >Add Treatment</button>
-                                : ""
-                        }
-
                     </details>
                 </div>
             </li>
