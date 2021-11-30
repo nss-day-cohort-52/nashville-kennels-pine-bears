@@ -17,10 +17,10 @@ export default () => {
         <>
             <div className="employees">
                 {
-                   emps.map(a => <Employee key={a.id} employee={a} />)
+                    emps.map(a => <Employee key={a.id} employee={a} />)
                 }
             </div>
-                
+
         </>
     )
 }
