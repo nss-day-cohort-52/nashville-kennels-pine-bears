@@ -55,19 +55,25 @@ export default ({ employee }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for 0 animals
+                                Caring for {resource.animals?.length} animals
                             </section>
                             <section>
-                                Working at unknown location
+                            {/* Working at {
+                                resource.locations.map(
+                                    (location) => {
+                                        return locations.location.name
+                                    }
+                                )
+                            } */}
                             </section>
                         </>
                         : ""
                 }
 
-                
+
                 {
                     isEmployee
-                        ? <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
+                        ? <button className="btn--fireEmployee" onClick={() => { }}>Fire</button>
                         : ""
                 }
 
