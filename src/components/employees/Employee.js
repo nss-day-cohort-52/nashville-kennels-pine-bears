@@ -7,7 +7,7 @@ import person from "./person.png"
 import "./Employee.css"
 
 
-export default ({ employee }) => {
+export default ({ employee, syncEmployees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
@@ -55,10 +55,10 @@ export default ({ employee }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length} animals 
+                                Caring for {resource.animals?.length} animals
                             </section>
                             <section>
-                            Working at{resource.locations?.map((l)=>{return <p>{l.location.name}</p>})}
+                                Working at{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}
                             </section>
                         </>
                         : ""
@@ -67,7 +67,12 @@ export default ({ employee }) => {
 
                 {
                     isEmployee
-                        ? <button className="btn--fireEmployee" onClick={() => { }}>Fire</button>
+                        ? <button className="btn--fireEmployee" onClick={() => {
+                            EmployeeRepository
+                                .delete(resource.id)
+                                .then(() => { EmployeeRepository.delete(resource.id) }) // Remove employee
+                                .then(() => { syncEmployees() }) // Get all employees
+                        }}>Fire</button>
                         : ""
                 }
 
