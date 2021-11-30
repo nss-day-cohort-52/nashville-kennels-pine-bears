@@ -109,7 +109,7 @@ export const Animal = ({ animal, syncAnimals,
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by 
+                                Owned by
                                 {
                                     currentAnimal?.animalOwners?.map(owner => {
                                         const foundAnimalOwners = users.filter(user => {
@@ -123,40 +123,40 @@ export const Animal = ({ animal, syncAnimals,
                                     })
                                 }
                             </span>
-                                {
-                                    myOwners.length < 2
-                                        ? <select defaultValue=""
-                                            name="owner"
-                                            className="form-control small"
-                                            onChange={() => { }} >
-                                            <option value="">
-                                                Select {myOwners.length === 1 ? "another" : "an"} owner
-                                            </option>
-                                            {
-                                                allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
-                                            }
-                                        </select>
-                                        : null
-                                }
+                            {
+                                myOwners.length < 2
+                                    ? <select defaultValue=""
+                                        name="owner"
+                                        className="form-control small"
+                                        onChange={() => { }} >
+                                        <option value="">
+                                            Select {myOwners.length === 1 ? "another" : "an"} owner
+                                        </option>
+                                        {
+                                            allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
+                                        }
+                                    </select>
+                                    : null
+                            }
 
 
-                                {
-                                    detailsOpen && "treatments" in currentAnimal
-                                        ? <div className="small">
-                                            <h6>Treatment History</h6>
-                                            {
-                                                currentAnimal.treatments.map(t => (
-                                                    <div key={t.id}>
-                                                        <p style={{ fontWeight: "bolder", color: "grey" }}>
-                                                            {new Date(t.timestamp).toLocaleString("en-US")}
-                                                        </p>
-                                                        <p>{t.description}</p>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                        : ""
-                                }
+                            {
+                                detailsOpen && "treatments" in currentAnimal
+                                    ? <div className="small">
+                                        <h6>Treatment History</h6>
+                                        {
+                                            currentAnimal.treatments.map(t => (
+                                                <div key={t.id}>
+                                                    <p style={{ fontWeight: "bolder", color: "grey" }}>
+                                                        {new Date(t.timestamp).toLocaleString("en-US")}
+                                                    </p>
+                                                    <p>{t.description}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    : ""
+                            }
                         </section>
 
                         {
@@ -164,8 +164,8 @@ export const Animal = ({ animal, syncAnimals,
                                 ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => { }) // Remove animal
-                                        .then(() => { }) // Get all animals
+                                        .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
+                                        .then(() => { syncAnimals() }) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
