@@ -4,7 +4,7 @@ import locationImage from "./location.png"
 import "./Location.css"
 
 
-export default ({location}) => {
+export default ({ location }) => {
     return (
         <article className="card location" style={{ width: `18rem` }}>
             <section className="card-body">
@@ -20,10 +20,10 @@ export default ({location}) => {
                 </h5>
             </section>
             <section>
-                Total animals
+                Total animals: {location?.animals.length}
             </section>
             <section>
-                Total locations
+                Total Employees: {location?.employeeLocations.length}
             </section>
         </article>
     )

@@ -107,9 +107,20 @@ export const Animal = ({ animal, syncAnimals,
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by unknown
+                                Owned by
+                                {
+                                    currentAnimal?.animalOwners?.map(owner => {
+                                        const foundAnimalOwners = users.filter(user => {
+                                            return user.id === owner.userId
+                                        })
+                                        return (
+                                            foundAnimalOwners.map(o => {
+                                                return <div key={o.id}>{o.name}</div>
+                                            })
+                                        )
+                                    })
+                                }
                             </span>
-
                             {
                                 myOwners.length < 2
                                     ? <select defaultValue=""
@@ -144,7 +155,6 @@ export const Animal = ({ animal, syncAnimals,
                                     </div>
                                     : ""
                             }
-
                         </section>
 
                         {
@@ -152,8 +162,8 @@ export const Animal = ({ animal, syncAnimals,
                                 ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => { }) // Remove animal
-                                        .then(() => { }) // Get all animals
+                                        .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
+                                        .then(() => { syncAnimals() }) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
