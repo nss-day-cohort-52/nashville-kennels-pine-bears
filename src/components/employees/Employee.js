@@ -14,6 +14,11 @@ export default ({ employee }) => {
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
+    const [isEmployee, setAuth] = useState(false)
+
+    useEffect(() => {
+        setAuth(getCurrentUser().employee)
+    })
 
     useEffect(() => {
         if (employeeId) {
@@ -59,8 +64,11 @@ export default ({ employee }) => {
                         : ""
                 }
 
+                
                 {
-                    <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
+                    isEmployee
+                        ? <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
+                        : ""
                 }
 
             </section>
