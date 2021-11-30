@@ -10,8 +10,9 @@ export default (props) => {
     const [animals, setAnimals] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
+    const [locationId, setLocationId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
-    
+
     useEffect(() => {
         EmployeeRepository.getAll().then(setEmployees)
     }, [])
@@ -19,7 +20,6 @@ export default (props) => {
     const constructNewAnimal = evt => {
         evt.preventDefault()
         const eId = parseInt(employeeId)
-
         if (eId === 0) {
             window.alert("Please select a caretaker")
         } else {
@@ -28,7 +28,7 @@ export default (props) => {
                 name: animalName,
                 breed: breed,
                 employeeId: eId,
-                locationId: parseInt(emp.locationId)
+                locationId: locationId
             }
 
             AnimalRepository.addAnimal(animal)
@@ -80,6 +80,33 @@ export default (props) => {
                     ))}
                 </select>
             </div>
+            {
+                employeeId
+                    ?
+                    <div className="form-group">
+                        <label htmlFor="location">Choose a kennel location</label>
+                        {
+                            employees.map(e => {
+                                if (e.id === parseInt(employeeId)) {
+                                    e.employeeLocations.map(location => {
+                                        return (
+                                            <input
+                                                type="checkbox"
+                                                required
+                                                className="form-control"
+                                                value={location.id}
+                                                onChange={e => setLocationId(e.target.value)}
+                                                id="location"
+                                                placeholder="Location"
+                                            />
+                                        )
+                                    })
+                                }
+                            })
+                        }
+                    </div>
+                    : ""
+            }
             <button type="submit"
                 onClick={constructNewAnimal}
                 disabled={saveEnabled}
