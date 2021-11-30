@@ -6,7 +6,6 @@ import OwnerRepository from "../../repositories/OwnerRepository";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import "./AnimalCard.css"
-import { AnimalListComponent } from "./AnimalList";
 
 export const Animal = ({ animal, syncAnimals,
     showTreatmentHistory, owners }) => {
