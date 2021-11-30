@@ -1,20 +1,29 @@
 import React, { useState, useContext, useEffect } from "react"
 import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
+import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
+import LocationRepository from "../../repositories/LocationRepository";
+import { Animal } from "./Animal";
 
 
 export default (props) => {
     const [animalName, setName] = useState("")
     const [breed, setBreed] = useState("")
     const [animals, setAnimals] = useState([])
+    const [locations, setLocations] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
-    const [locationId, setLocationId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
 
     useEffect(() => {
         EmployeeRepository.getAll().then(setEmployees)
+    }, [])
+    useEffect(() => {
+        LocationRepository.getAll().then(setLocations)
+    }, [])
+    useEffect(() => {
+        AnimalRepository.getAll().then(setAnimals)
     }, [])
 
     const constructNewAnimal = evt => {
@@ -24,12 +33,25 @@ export default (props) => {
             window.alert("Please select a caretaker")
         } else {
             const emp = employees.find(e => e.id === eId)
+            const foundLocation = () => {
+                const empLocations = emp.employeeLocations
+                for (const empLocation of empLocations) {
+                    for (const location of locations) {
+                        if (location.id === empLocation.locationId) {
+                            return location
+                        }
+                    }
+                }
+            }
             const animal = {
                 name: animalName,
                 breed: breed,
-                employeeId: eId,
-                locationId: locationId
+                locationId: foundLocation().id
             }
+            
+            const foundAnimal = animals.find(a => a.id === animal.id)
+
+            AnimalCaretakerRepository.assignCaretaker(foundAnimal.id, eId)
 
             AnimalRepository.addAnimal(animal)
                 .then(() => setEnabled(true))
@@ -80,33 +102,6 @@ export default (props) => {
                     ))}
                 </select>
             </div>
-            {
-                employeeId
-                    ?
-                    <div className="form-group">
-                        <label htmlFor="location">Choose a kennel location</label>
-                        {
-                            employees.map(e => {
-                                if (e.id === parseInt(employeeId)) {
-                                    e.employeeLocations.map(location => {
-                                        return (
-                                            <input
-                                                type="checkbox"
-                                                required
-                                                className="form-control"
-                                                value={location.id}
-                                                onChange={e => setLocationId(e.target.value)}
-                                                id="location"
-                                                placeholder="Location"
-                                            />
-                                        )
-                                    })
-                                }
-                            })
-                        }
-                    </div>
-                    : ""
-            }
             <button type="submit"
                 onClick={constructNewAnimal}
                 disabled={saveEnabled}
