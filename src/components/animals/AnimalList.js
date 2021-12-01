@@ -16,6 +16,7 @@ export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
     const [animalOwners, setAnimalOwners] = useState([])
     const [owners, updateOwners] = useState([])
+    const [caretakers, updateCaretakers] = useState([])
     const [currentAnimal, setCurrentAnimal] = useState({ treatments: [] })
     const { getCurrentUser } = useSimpleAuth()
     const history = useHistory()
@@ -27,6 +28,7 @@ export const AnimalListComponent = (props) => {
 
     useEffect(() => {
         OwnerRepository.getAllCustomers().then(updateOwners)
+        OwnerRepository.getAllEmployees().then(updateCaretakers)
         AnimalOwnerRepository.getAll().then(setAnimalOwners)
         syncAnimals()
     }, [])
@@ -76,6 +78,7 @@ export const AnimalListComponent = (props) => {
                         <Animal key={`animal--${anml.id}`} animal={anml}
                             animalOwners={animalOwners}
                             owners={owners}
+                            caretakers={caretakers}
                             syncAnimals={syncAnimals}
                             setAnimalOwners={setAnimalOwners}
                             showTreatmentHistory={showTreatmentHistory}

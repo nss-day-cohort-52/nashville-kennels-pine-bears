@@ -9,7 +9,7 @@ import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import "./AnimalCard.css"
 
 export const Animal = ({ animal, syncAnimals,
-    showTreatmentHistory, owners }) => {
+    showTreatmentHistory, owners, caretakers }) => {
     const [detailsOpen, setDetailsOpen] = useState(false)
     const [isEmployee, setAuth] = useState(false)
     const [myOwners, setPeople] = useState([])
@@ -33,6 +33,12 @@ export const Animal = ({ animal, syncAnimals,
             registerOwners(owners)
         }
     }, [owners])
+
+    useEffect(() => {
+        if (caretakers) {
+            registerCaretakers(caretakers)
+        }
+    }, [caretakers])
 
     useEffect(() => {
         OwnerRepository.getAll()
@@ -71,6 +77,22 @@ export const Animal = ({ animal, syncAnimals,
         }
     }, [animalId])
 
+    useEffect(() => {
+        if (animalId) {
+            defineClasses("card animal--single")
+            setDetailsOpen(true)
+
+            AnimalCaretakerRepository.getCaretakersByAnimal(animalId).then(d => setCaretakers(d))
+                .then(() => {
+                    OwnerRepository.getAllEmployees()
+                        .then(registerCaretakers)
+                })
+        }
+    }, [animalId])
+
+    const addNewCaretaker = () => {
+        
+    }
 
     return (
         <>
@@ -127,12 +149,12 @@ export const Animal = ({ animal, syncAnimals,
                                             Select {myCaretakers.length === 1 ? "another" : "an"} caretaker
                                         </option>
                                         {
-                                            allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
+                                            allCaretakers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
                                         }
                                     </select>
                                     : null
                             }
-                            
+
                             <h6>Owners</h6>
                             <span className="small">
                                 Owned by
