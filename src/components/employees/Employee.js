@@ -66,7 +66,7 @@ export default ({ employee, syncEmployees }) => {
                             <section>
                                 Works at {resource.locations?.map((l) => {
                                     return <Link className="employee-location"
-                                        to={`/locations/${l.location.id}`}>{l.location.name} )</Link>
+                                        to={`/locations/${l.location.id}`}>{l.location.name}</Link>
                                 })}
                             </section>
                         </>
