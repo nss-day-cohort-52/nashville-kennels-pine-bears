@@ -58,7 +58,7 @@ export default ({ employee, syncEmployees }) => {
                                 Caring for {resource.animals?.length} animals
                             </section>
                             <section>
-                                Working at{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}
+                                Works at{resource.locations?.map((l)=>{ return <p>{l.location.name}</p>})}
                             </section>
                         </>
                         : ""
