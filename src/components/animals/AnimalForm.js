@@ -1,29 +1,27 @@
 import React, { useState, useContext, useEffect } from "react"
+import { useHistory } from "react-router"
 import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
 import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import LocationRepository from "../../repositories/LocationRepository";
-import { Animal } from "./Animal";
-
+// import { Animal } from "./Animal";
 
 export default (props) => {
     const [animalName, setName] = useState("")
     const [breed, setBreed] = useState("")
-    const [animals, setAnimals] = useState([])
+    // const [animals, setAnimals] = useState([])
     const [locations, setLocations] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
+    const history = useHistory()
 
     useEffect(() => {
         EmployeeRepository.getAll().then(setEmployees)
     }, [])
     useEffect(() => {
         LocationRepository.getAll().then(setLocations)
-    }, [])
-    useEffect(() => {
-        AnimalRepository.getAll().then(setAnimals)
     }, [])
 
     const constructNewAnimal = evt => {
@@ -33,7 +31,7 @@ export default (props) => {
             window.alert("Please select a caretaker")
         } else {
             const emp = employees.find(e => e.id === eId)
-            const foundLocation = () => {
+            const findLocation = () => {
                 const empLocations = emp.employeeLocations
                 for (const empLocation of empLocations) {
                     for (const location of locations) {
@@ -43,19 +41,18 @@ export default (props) => {
                     }
                 }
             }
+            const foundLocation = findLocation()
             const animal = {
                 name: animalName,
                 breed: breed,
-                locationId: foundLocation().id
+                locationId: foundLocation?.id
             }
-            
-            const foundAnimal = animals.find(a => a.id === animal.id)
 
-            AnimalCaretakerRepository.assignCaretaker(foundAnimal.id, eId)
 
             AnimalRepository.addAnimal(animal)
+                .then((newAnimal) => { AnimalCaretakerRepository.assignCaretaker(newAnimal.id, eId) })
                 .then(() => setEnabled(true))
-                .then(() => props.history?.push("/animals"))
+                .then(() => { history.push("/animals") })
         }
     }
 
