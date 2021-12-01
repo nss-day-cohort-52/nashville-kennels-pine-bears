@@ -7,10 +7,8 @@ import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository"
 import useModal from "../../hooks/ui/useModal"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import OwnerRepository from "../../repositories/OwnerRepository"
-
 import "./AnimalList.css"
 import "./cursor.css"
-
 
 export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
@@ -54,7 +52,6 @@ export const AnimalListComponent = (props) => {
     return (
         <>
             <AnimalDialog toggleDialog={toggleDialog} animal={currentAnimal} />
-
 
             {
                 getCurrentUser().employee

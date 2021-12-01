@@ -29,10 +29,15 @@ export const Animal = ({ animal, syncAnimals,
     }, [])
 
     useEffect(() => {
+        resolveResource(animal, animalId, AnimalRepository.get)
+    }, [animal])
+
+    useEffect(() => {
         if (owners) {
             registerOwners(owners)
         }
     }, [owners])
+
 
     useEffect(() => {
         if (caretakers) {
@@ -50,6 +55,7 @@ export const Animal = ({ animal, syncAnimals,
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
     }
+    
     const getCaretakers = () => {
         return AnimalCaretakerRepository
             .getCaretakersByAnimal(currentAnimal.id)
@@ -90,9 +96,6 @@ export const Animal = ({ animal, syncAnimals,
         }
     }, [animalId])
 
-    const addNewCaretaker = () => {
-        
-    }
 
     return (
         <>
@@ -127,7 +130,7 @@ export const Animal = ({ animal, syncAnimals,
                             <h6>Caretaker(s)</h6>
                             <span className="small">
                                 {
-                                    currentAnimal?.animalCaretakers?.map(caretaker => {
+                                    myCaretakers.map(caretaker => {
                                         const foundCaretakers = users.filter(user => {
                                             return user.id === caretaker.userId
                                         })
@@ -144,7 +147,11 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="caretaker"
                                         className="form-control small"
-                                        onChange={() => { }} >
+                                        onChange={(e) =>
+                                            AnimalCaretakerRepository
+                                                .assignCaretaker(currentAnimal.id, parseInt(e.target.value))
+                                                .then(syncAnimals)
+                                        } >
                                         <option value="">
                                             Select {myCaretakers.length === 1 ? "another" : "an"} caretaker
                                         </option>
@@ -211,7 +218,7 @@ export const Animal = ({ animal, syncAnimals,
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
                                         .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
-                                        .then(() => { syncAnimals() }) // Get all animals
+                                        .then(syncAnimals)
                                 }>Discharge</button>
                                 : ""
                         }
