@@ -64,16 +64,17 @@ export default ({ employee, syncEmployees }) => {
                                 Working on unknown treatments
                             </section>
                             <section>
-                                Works at <Link to={`/employeeLocations?_expand=locationId=${locationId}`}>{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}</Link>
+                                Works at <Link to={`/locations/${locationId}`}>{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}</Link>
                             </section>
                         </>
                         : ""
                 }
 
 
+
                 {
                     isEmployee
-                        ? <button className="btn--fireEmployee" onClick={() => {
+                        ? <button className="btn--fireEmployee" onClick={(evt) => {
                             EmployeeRepository
                                 .delete(resource.id)
                                 .then(() => { syncEmployees() }) // Get all employees
