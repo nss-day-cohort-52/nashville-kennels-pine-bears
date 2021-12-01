@@ -23,6 +23,7 @@ export default (props) => {
         LocationRepository.getAll().then(setLocations)
     }, [])
 
+
     const constructNewAnimal = evt => {
         evt.preventDefault()
         const eId = parseInt(employeeId)

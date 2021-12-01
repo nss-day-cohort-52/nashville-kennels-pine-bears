@@ -55,7 +55,7 @@ export const Animal = ({ animal, syncAnimals,
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
     }
-    
+
     const getCaretakers = () => {
         return AnimalCaretakerRepository
             .getCaretakersByAnimal(currentAnimal.id)
@@ -143,7 +143,7 @@ export const Animal = ({ animal, syncAnimals,
                                 }
                             </span>
                             {
-                                myCaretakers.length < 2
+                                myCaretakers.length < 2 && isEmployee
                                     ? <select defaultValue=""
                                         name="caretaker"
                                         className="form-control small"
@@ -179,7 +179,7 @@ export const Animal = ({ animal, syncAnimals,
                                 }
                             </span>
                             {
-                                myOwners.length < 2
+                                myOwners.length < 2 && isEmployee
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
