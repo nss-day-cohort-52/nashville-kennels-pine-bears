@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router";
 import AnimalRepository from "../../repositories/AnimalRepository";
 import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository";
+import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository";
 import OwnerRepository from "../../repositories/OwnerRepository";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
@@ -12,7 +13,9 @@ export const Animal = ({ animal, syncAnimals,
     const [detailsOpen, setDetailsOpen] = useState(false)
     const [isEmployee, setAuth] = useState(false)
     const [myOwners, setPeople] = useState([])
+    const [myCaretakers, setCaretakers] = useState([])
     const [allOwners, registerOwners] = useState([])
+    const [allCaretakers, registerCaretakers] = useState([])
     const [classes, defineClasses] = useState("card animal")
     const { getCurrentUser } = useSimpleAuth()
     const history = useHistory()
@@ -33,7 +36,7 @@ export const Animal = ({ animal, syncAnimals,
 
     useEffect(() => {
         OwnerRepository.getAll()
-        .then(setUsers)
+            .then(setUsers)
     }, [])
 
     const getPeople = () => {
@@ -41,9 +44,18 @@ export const Animal = ({ animal, syncAnimals,
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
     }
+    const getCaretakers = () => {
+        return AnimalCaretakerRepository
+            .getCaretakersByAnimal(currentAnimal.id)
+            .then(caretakers => setCaretakers(caretakers))
+    }
 
     useEffect(() => {
         getPeople()
+    }, [currentAnimal])
+
+    useEffect(() => {
+        getCaretakers()
     }, [currentAnimal])
 
     useEffect(() => {
@@ -54,7 +66,7 @@ export const Animal = ({ animal, syncAnimals,
             AnimalOwnerRepository.getOwnersByAnimal(animalId).then(d => setPeople(d))
                 .then(() => {
                     OwnerRepository.getAllCustomers()
-                    .then(registerOwners)
+                        .then(registerOwners)
                 })
         }
     }, [animalId])
@@ -105,8 +117,22 @@ export const Animal = ({ animal, syncAnimals,
                                     })
                                 }
                             </span>
-
-
+                            {
+                                myCaretakers.length < 2
+                                    ? <select defaultValue=""
+                                        name="caretaker"
+                                        className="form-control small"
+                                        onChange={() => { }} >
+                                        <option value="">
+                                            Select {myCaretakers.length === 1 ? "another" : "an"} caretaker
+                                        </option>
+                                        {
+                                            allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
+                                        }
+                                    </select>
+                                    : null
+                            }
+                            
                             <h6>Owners</h6>
                             <span className="small">
                                 Owned by
@@ -138,8 +164,6 @@ export const Animal = ({ animal, syncAnimals,
                                     </select>
                                     : null
                             }
-
-
                             {
                                 detailsOpen && "treatments" in currentAnimal
                                     ? <div className="small">
