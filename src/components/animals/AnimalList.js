@@ -7,15 +7,14 @@ import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository"
 import useModal from "../../hooks/ui/useModal"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import OwnerRepository from "../../repositories/OwnerRepository"
-
 import "./AnimalList.css"
 import "./cursor.css"
-
 
 export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
     const [animalOwners, setAnimalOwners] = useState([])
     const [owners, updateOwners] = useState([])
+    const [caretakers, updateCaretakers] = useState([])
     const [currentAnimal, setCurrentAnimal] = useState({ treatments: [] })
     const { getCurrentUser } = useSimpleAuth()
     const history = useHistory()
@@ -27,6 +26,7 @@ export const AnimalListComponent = (props) => {
 
     useEffect(() => {
         OwnerRepository.getAllCustomers().then(updateOwners)
+        OwnerRepository.getAllEmployees().then(updateCaretakers)
         AnimalOwnerRepository.getAll().then(setAnimalOwners)
         syncAnimals()
     }, [])
@@ -53,13 +53,12 @@ export const AnimalListComponent = (props) => {
         <>
             <AnimalDialog toggleDialog={toggleDialog} animal={currentAnimal} />
 
-
             {
                 getCurrentUser().employee
                     ? <div className="centerChildren btn--newResource">
-                        <button className="btn btn-success " onClick={() => {history.push(`./animals/treatments`)}}
+                        <button className="btn btn-success " onClick={() => { history.push(`./animals/treatments`) }}
                         >Add Treatment</button>
-                      </div>
+                    </div>
                     : <div className="centerChildren btn--newResource">
                         <button type="button"
                             className="btn btn-success "
@@ -76,6 +75,7 @@ export const AnimalListComponent = (props) => {
                         <Animal key={`animal--${anml.id}`} animal={anml}
                             animalOwners={animalOwners}
                             owners={owners}
+                            caretakers={caretakers}
                             syncAnimals={syncAnimals}
                             setAnimalOwners={setAnimalOwners}
                             showTreatmentHistory={showTreatmentHistory}

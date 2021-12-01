@@ -18,9 +18,11 @@ export default (props) => {
     useEffect(() => {
         EmployeeRepository.getAll().then(setEmployees)
     }, [])
+
     useEffect(() => {
         LocationRepository.getAll().then(setLocations)
     }, [])
+
 
     const constructNewAnimal = evt => {
         evt.preventDefault()
@@ -98,7 +100,7 @@ export default (props) => {
                 </select>
             </div>
             <button type="submit"
-                onClick={constructNewAnimal}
+                onClick={(evt) => { constructNewAnimal(evt) }}
                 disabled={saveEnabled}
                 className="btn btn-primary"> Submit </button>
         </form>
