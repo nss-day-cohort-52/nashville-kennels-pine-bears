@@ -37,5 +37,6 @@ export default {
     },
     async getAll() {
         return await fetchIt(`${Settings.remoteURL}/locations?_embed=animals&_embed=employeeLocations`)
-    }
+    },
+
 }
