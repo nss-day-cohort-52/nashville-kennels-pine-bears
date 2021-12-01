@@ -133,7 +133,6 @@ export const Animal = ({ animal, syncAnimals,
                                                 currentAnimal.id, 
                                                 parseInt(evt.target.value))
                                                 .then(getPeople)
-                                                .then(() => { syncAnimals() }) 
                                         }} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner

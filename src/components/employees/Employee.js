@@ -64,7 +64,10 @@ export default ({ employee, syncEmployees }) => {
                                 Working on unknown treatments
                             </section>
                             <section>
-                                Works at <Link to={`/locations/${locationId}`}>{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}</Link>
+                                Works at {resource.locations?.map((l) => {
+                                    return <Link className="employee-location"
+                                        to={`/locations/${l.location.id}`}>{l.location.name} )</Link>
+                                })}
                             </section>
                         </>
                         : ""
