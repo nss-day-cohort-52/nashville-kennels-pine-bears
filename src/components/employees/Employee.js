@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import EmployeeRepository from "../../repositories/EmployeeRepository";
+import LocationRepository from "../../repositories/LocationRepository";
+import AnimalRepository from "../../repositories/AnimalRepository";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import person from "./person.png"
@@ -9,9 +11,9 @@ import "./Employee.css"
 
 export default ({ employee, syncEmployees }) => {
     const [animalCount, setCount] = useState(0)
-    const [location, markLocation] = useState({ name: "" })
+    const [location, markLocation] = useState({})
     const [classes, defineClasses] = useState("card employee")
-    const { employeeId } = useParams()
+    const { employeeId, locationId, animalId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
     const [isEmployee, setAuth] = useState(false)
@@ -31,7 +33,8 @@ export default ({ employee, syncEmployees }) => {
         if (resource?.employeeLocations?.length > 0) {
             markLocation(resource.employeeLocations[0])
         }
-    }, [resource])
+        resolveResource(location, locationId, LocationRepository.get)
+    }, [])
 
     return (
         <article className={classes}>
@@ -58,7 +61,10 @@ export default ({ employee, syncEmployees }) => {
                                 Caring for {resource.animals?.length} animals
                             </section>
                             <section>
-                                Works at{resource.locations?.map((l)=>{ return <p>{l.location.name}</p>})}
+                                Working on unknown treatments
+                            </section>
+                            <section>
+                                Works at <Link to={`/employeeLocations?_expand=locationId=${locationId}`}>{resource.locations?.map((l) => { return <p>{l.location.name}</p> })}</Link>
                             </section>
                         </>
                         : ""
