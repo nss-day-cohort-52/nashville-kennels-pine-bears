@@ -165,7 +165,7 @@ export const Animal = ({ animal, syncAnimals,
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
                                         .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
-                                        .then(() => { syncAnimals() }) // Get all animals*
+                                        .then(() => { syncAnimals() }) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
