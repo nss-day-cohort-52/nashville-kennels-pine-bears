@@ -57,9 +57,9 @@ export const AnimalListComponent = (props) => {
             {
                 getCurrentUser().employee
                     ? <div className="centerChildren btn--newResource">
-                        <button className="btn btn-success " onClick={() => {history.push(`./animals/treatments`)}}
+                        <button className="btn btn-success " onClick={() => { history.push(`./animals/treatments`) }}
                         >Add Treatment</button>
-                      </div>
+                    </div>
                     : <div className="centerChildren btn--newResource">
                         <button type="button"
                             className="btn btn-success "

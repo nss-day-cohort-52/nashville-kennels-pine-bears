@@ -7,7 +7,7 @@ export default {
         const employees = await OwnerRepository.getAllEmployees()
         return await fetchIt(`${Settings.remoteURL}/locations/${id}?_embed=animals&_embed=employeeLocations`)
             .then(location => {
-                location.employeeLocations = location.employeeLocations.map(
+                location.employeeLocations = location.employeeLocations?.map(
                     el => {
                         el.employee = employees.find(e => e.id === el.userId)
                         return el

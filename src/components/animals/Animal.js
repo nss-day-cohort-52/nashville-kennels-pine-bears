@@ -44,7 +44,7 @@ export const Animal = ({ animal, syncAnimals,
 
     useEffect(() => {
         getPeople()
-    }, [currentAnimal])
+    }, [currentAnimal, animal])
 
     useEffect(() => {
         if (animalId) {
@@ -111,7 +111,7 @@ export const Animal = ({ animal, syncAnimals,
                             <span className="small">
                                 Owned by
                                 {
-                                    currentAnimal?.animalOwners?.map(owner => {
+                                    myOwners.map(owner => {
                                         const foundAnimalOwners = users.filter(user => {
                                             return user.id === owner.userId
                                         })
@@ -128,7 +128,13 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
-                                        onChange={() => { }} >
+                                        onChange={(evt) => { 
+                                            AnimalOwnerRepository
+                                            .assignOwner(
+                                                currentAnimal.id, 
+                                                parseInt(evt.target.value))
+                                                .then(getPeople)
+                                        }} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner
                                         </option>
