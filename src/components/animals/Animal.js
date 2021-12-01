@@ -26,11 +26,11 @@ export const Animal = ({ animal, syncAnimals,
     useEffect(() => {
         setAuth(getCurrentUser().employee)
         resolveResource(animal, animalId, AnimalRepository.get)
-    }, [])
-
-    useEffect(() => {
-        resolveResource(animal, animalId, AnimalRepository.get)
     }, [animal])
+
+    // useEffect(() => {
+    //     resolveResource(animal, animalId, AnimalRepository.get)
+    // }, [animal])
 
     useEffect(() => {
         if (owners) {
@@ -64,7 +64,7 @@ export const Animal = ({ animal, syncAnimals,
 
     useEffect(() => {
         getPeople()
-    }, [currentAnimal, animal])
+    }, [currentAnimal])
 
     useEffect(() => {
         getCaretakers()
@@ -164,7 +164,6 @@ export const Animal = ({ animal, syncAnimals,
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by
                                 {
                                     myOwners.map(owner => {
                                         const foundAnimalOwners = users.filter(user => {
