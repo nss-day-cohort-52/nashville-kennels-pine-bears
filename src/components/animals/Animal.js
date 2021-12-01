@@ -44,7 +44,7 @@ export const Animal = ({ animal, syncAnimals,
 
     useEffect(() => {
         getPeople()
-    }, [currentAnimal])
+    }, [currentAnimal, animal])
 
     useEffect(() => {
         if (animalId) {
@@ -111,7 +111,7 @@ export const Animal = ({ animal, syncAnimals,
                             <span className="small">
                                 Owned by
                                 {
-                                    currentAnimal?.animalOwners?.map(owner => {
+                                    myOwners.map(owner => {
                                         const foundAnimalOwners = users.filter(user => {
                                             return user.id === owner.userId
                                         })
@@ -129,7 +129,8 @@ export const Animal = ({ animal, syncAnimals,
                                         name="owner"
                                         className="form-control small"
                                         onChange={(evt) => { 
-                                            AnimalOwnerRepository.assignOwner(
+                                            AnimalOwnerRepository
+                                            .assignOwner(
                                                 currentAnimal.id, 
                                                 parseInt(evt.target.value))
                                                 .then(getPeople)
