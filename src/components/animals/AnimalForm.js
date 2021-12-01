@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router"
 import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
 import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import LocationRepository from "../../repositories/LocationRepository";
-// import { Animal } from "./Animal";
 
 export default (props) => {
     const [animalName, setName] = useState("")
     const [breed, setBreed] = useState("")
-    // const [animals, setAnimals] = useState([])
     const [locations, setLocations] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
