@@ -2,6 +2,7 @@ import React from "react"
 import { Route } from "react-router-dom"
 import { LocationList } from "./locations/LocationList"
 import LocationDetail from "./locations/LocationDetail"
+import { LocationAssignForm } from "./locations/LocationAssignForm"
 
 export default () => {
     return (
@@ -14,6 +15,9 @@ export default () => {
             </Route>
             <Route path="/locations/:locationId(\d+)">
                 <LocationDetail />
+            </Route>
+            <Route exact path="/locations/assign">
+                <LocationAssignForm />
             </Route>
         </>
     )
