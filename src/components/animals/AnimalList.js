@@ -32,7 +32,7 @@ export const AnimalListComponent = (props) => {
 
     useEffect(() => {
         OwnerRepository.getAllCustomers().then(updateOwners)
-        AnimalCaretakerRepository.getAll().then(updateCaretakers)
+        OwnerRepository.getAllEmployees().then(updateCaretakers)
         AnimalOwnerRepository.getAll().then(setAnimalOwners)
         syncAnimals()
     }, [])
