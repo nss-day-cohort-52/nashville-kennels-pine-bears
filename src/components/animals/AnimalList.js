@@ -72,7 +72,7 @@ export const AnimalListComponent = (props) => {
             <AnimalDialog toggleDialog={toggleDialog} animal={currentAnimal} setCurrentAnimal={setCurrentAnimal} />
 
             {
-                getCurrentUser().employee
+                isEmployee
                     ? <div className="centerChildren btn--newResource">
                         <button className="btn btn-success " onClick={() => { history.push(`./animals/treatments`) }}
                         >Add Treatment</button>
@@ -89,23 +89,23 @@ export const AnimalListComponent = (props) => {
 
             <ul className="animals">
                 {
-                    getCurrentUser().employee ?
-
+                    isEmployee
+                        ?
                         animals.map(anml =>
                             <Animal key={`animal--${anml.id}`} animal={anml}
                                 animalOwners={animalOwners}
                                 owners={owners}
+                                caretakers={caretakers}
                                 syncAnimals={syncAnimals}
                                 setAnimalOwners={setAnimalOwners}
                                 showTreatmentHistory={showTreatmentHistory}
                             />)
-
                         :
-
                         currentAnimalOwner().map(anml =>
                             <Animal key={`animal--${anml.id}`} animal={anml}
                                 animalOwners={animalOwners}
                                 owners={owners}
+                                caretakers={caretakers}
                                 syncAnimals={syncAnimals}
                                 setAnimalOwners={setAnimalOwners}
                                 showTreatmentHistory={showTreatmentHistory}

@@ -26,10 +26,6 @@ export const Animal = ({ animal, syncAnimals,
     useEffect(() => {
         setAuth(getCurrentUser().employee)
         resolveResource(animal, animalId, AnimalRepository.get)
-    }, [])
-
-    useEffect(() => {
-        resolveResource(animal, animalId, AnimalRepository.get)
     }, [animal])
 
     useEffect(() => {
@@ -51,20 +47,24 @@ export const Animal = ({ animal, syncAnimals,
     }, [])
 
     const getPeople = () => {
-        return AnimalOwnerRepository
-            .getOwnersByAnimal(currentAnimal.id)
-            .then(people => setPeople(people))
+        if ("id" in currentAnimal) {
+            AnimalOwnerRepository
+                .getOwnersByAnimal(currentAnimal.id)
+                .then(people => setPeople(people))
+        }
     }
 
     const getCaretakers = () => {
-        return AnimalCaretakerRepository
-            .getCaretakersByAnimal(currentAnimal.id)
-            .then(caretakers => setCaretakers(caretakers))
+        if ("id" in currentAnimal) {
+            AnimalCaretakerRepository
+                .getCaretakersByAnimal(currentAnimal.id)
+                .then(caretakers => setCaretakers(caretakers))
+        }
     }
 
     useEffect(() => {
         getPeople()
-    }, [currentAnimal, animal])
+    }, [currentAnimal])
 
     useEffect(() => {
         getCaretakers()
@@ -130,15 +130,8 @@ export const Animal = ({ animal, syncAnimals,
                             <h6>Caretaker(s)</h6>
                             <span className="small">
                                 {
-                                    myCaretakers.map(caretaker => {
-                                        const foundCaretakers = users.filter(user => {
-                                            return user.id === caretaker.userId
-                                        })
-                                        return (
-                                            foundCaretakers.map(c => {
-                                                return <div key={c.id}>{c.name}</div>
-                                            })
-                                        )
+                                    myCaretakers.map(c => {
+                                        return <div key={c.id}>{c.user?.name}</div>
                                     })
                                 }
                             </span>
@@ -164,16 +157,10 @@ export const Animal = ({ animal, syncAnimals,
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by
                                 {
-                                    myOwners.map(owner => {
-                                        const foundAnimalOwners = users.filter(user => {
-                                            return user.id === owner.userId
-                                        })
+                                    myOwners.map(o => {
                                         return (
-                                            foundAnimalOwners.map(o => {
-                                                return <div key={o.id}>{o.name}</div>
-                                            })
+                                            <div key={o.id}>{o.user?.name}</div>
                                         )
                                     })
                                 }
@@ -183,11 +170,11 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
-                                        onChange={(evt) => { 
+                                        onChange={(evt) => {
                                             AnimalOwnerRepository
-                                            .assignOwner(
-                                                currentAnimal.id, 
-                                                parseInt(evt.target.value))
+                                                .assignOwner(
+                                                    currentAnimal.id,
+                                                    parseInt(evt.target.value))
                                                 .then(getPeople)
                                         }} >
                                         <option value="">

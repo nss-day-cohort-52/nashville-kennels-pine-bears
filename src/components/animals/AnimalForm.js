@@ -5,6 +5,8 @@ import AnimalRepository from "../../repositories/AnimalRepository";
 import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import LocationRepository from "../../repositories/LocationRepository";
+import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository";
+import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 
 export default (props) => {
     const [animalName, setName] = useState("")
@@ -13,6 +15,7 @@ export default (props) => {
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
+    const { getCurrentUser } = useSimpleAuth()
     const history = useHistory()
 
     useEffect(() => {
@@ -23,6 +26,7 @@ export default (props) => {
         LocationRepository.getAll().then(setLocations)
     }, [])
 
+    const currentUserId = getCurrentUser().id
 
     const constructNewAnimal = evt => {
         evt.preventDefault()
@@ -50,7 +54,7 @@ export default (props) => {
 
 
             AnimalRepository.addAnimal(animal)
-                .then((newAnimal) => { AnimalCaretakerRepository.assignCaretaker(newAnimal.id, eId) })
+                .then((newAnimal) => { AnimalCaretakerRepository.assignCaretaker(newAnimal.id, eId) && AnimalOwnerRepository.assignOwner(newAnimal.id, currentUserId) })
                 .then(() => setEnabled(true))
                 .then(() => { history.push("/animals") })
         }

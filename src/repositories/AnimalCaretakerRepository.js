@@ -18,7 +18,7 @@ export default {
         })
         return await e.json()
     },
-    async getCaretakersByAnimal (animalId) {
+    async getCaretakersByAnimal(animalId) {
         const e = await fetch(`${Settings.remoteURL}/animalCaretakers?animalId=${animalId}&_expand=user`)
         return await e.json()
     },
@@ -34,7 +34,7 @@ export default {
         return await e.json()
     },
     async getAll() {
-        const e = await fetch(`${Settings.remoteURL}/animalCaretakers?_expand=user&user.employee=true&_expand=animal`)
+        const e = await fetch(`${Settings.remoteURL}/animalCaretakers?_expand=user&_expand=animal`)
         return await e.json()
     }
 }
