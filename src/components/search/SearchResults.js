@@ -1,10 +1,14 @@
-import React from "react"
 import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react"
 import "./SearchResults.css"
+import { Link, useParams } from "react-router-dom"
+import LocationRepository from "../../repositories/LocationRepository";
+
 
 
 export default () => {
     const location = useLocation()
+    const { employeeId, locationId, animalId } = useParams()
 
     const displayAnimals = () => {
         if (location.state?.animals.length) {
@@ -38,7 +42,13 @@ export default () => {
                 <React.Fragment>
                     <h2>Matching Locations</h2>
                     <section className="locations">
-                        Display matching locations
+                        {
+                            location.state?.locations.map(loc => {
+                                return <Link className="search-location" to={{
+                                    pathname: `/locations/${loc.id}`,
+                                    state: { location: location }
+                                }}>{loc.name}</Link>
+                            })}
                     </section>
                 </React.Fragment>
             )

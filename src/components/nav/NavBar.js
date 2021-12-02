@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Link, useHistory } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { Link, useHistory, useParams } from "react-router-dom"
 import AnimalRepository from "../../repositories/AnimalRepository";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import Settings from "../../repositories/Settings";
@@ -10,9 +10,10 @@ import "./NavBar.css"
 
 
 export const NavBar = () => {
-    const [ searchTerms, setTerms ] = useState("")
+    const [searchTerms, setTerms] = useState("")
     const { isAuthenticated, logout, getCurrentUser } = useSimpleAuth()
     const history = useHistory()
+    const { employeeId, locationId, animalId } = useParams()
 
     const search = (e) => {
         if (e.keyCode === 13) {
