@@ -51,15 +51,19 @@ export const Animal = ({ animal, syncAnimals,
     }, [])
 
     const getPeople = () => {
-        return AnimalOwnerRepository
-            .getOwnersByAnimal(currentAnimal.id)
-            .then(people => setPeople(people))
+        if ("id" in currentAnimal) {
+            AnimalOwnerRepository
+                .getOwnersByAnimal(currentAnimal.id)
+                .then(people => setPeople(people))
+        }
     }
 
     const getCaretakers = () => {
-        return AnimalCaretakerRepository
-            .getCaretakersByAnimal(currentAnimal.id)
-            .then(caretakers => setCaretakers(caretakers))
+        if ("id" in currentAnimal) {
+            AnimalCaretakerRepository
+                .getCaretakersByAnimal(currentAnimal.id)
+                .then(caretakers => setCaretakers(caretakers))
+        }
     }
 
     useEffect(() => {

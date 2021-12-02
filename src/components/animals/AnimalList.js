@@ -9,7 +9,6 @@ import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import OwnerRepository from "../../repositories/OwnerRepository"
 import "./AnimalList.css"
 import "./cursor.css"
-import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository"
 
 export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
