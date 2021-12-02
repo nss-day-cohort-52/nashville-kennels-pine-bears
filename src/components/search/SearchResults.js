@@ -3,14 +3,11 @@ import {Link, useLocation } from "react-router-dom";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 
 import "./SearchResults.css"
-import { Link, useParams } from "react-router-dom"
-import LocationRepository from "../../repositories/LocationRepository";
 
 
 
 export default () => {
     const location = useLocation()
-    const { employeeId, locationId, animalId } = useParams()
     const [isEmployee, setAuth] = useState(false)
     const { getCurrentUser } = useSimpleAuth()
 
