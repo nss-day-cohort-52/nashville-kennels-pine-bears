@@ -28,10 +28,6 @@ export const Animal = ({ animal, syncAnimals,
         resolveResource(animal, animalId, AnimalRepository.get)
     }, [animal])
 
-    // useEffect(() => {
-    //     resolveResource(animal, animalId, AnimalRepository.get)
-    // }, [animal])
-
     useEffect(() => {
         if (owners) {
             registerOwners(owners)
@@ -162,14 +158,9 @@ export const Animal = ({ animal, syncAnimals,
                             <h6>Owners</h6>
                             <span className="small">
                                 {
-                                    myOwners.map(owner => {
-                                        const foundAnimalOwners = users.filter(user => {
-                                            return user.id === owner.userId
-                                        })
+                                    myOwners.map(o => {
                                         return (
-                                            foundAnimalOwners.map(o => {
-                                                return <div key={o.id}>{o.name}</div>
-                                            })
+                                            <div key={o.id}>{o.user?.name}</div>
                                         )
                                     })
                                 }
