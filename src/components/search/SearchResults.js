@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom";
+import {Link, useLocation } from "react-router-dom";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
+
 import "./SearchResults.css"
 import { Link, useParams } from "react-router-dom"
 import LocationRepository from "../../repositories/LocationRepository";
@@ -26,7 +27,7 @@ export default () => {
                     <section className="animals">
                         {
                             location.state?.animals.map(anml => {
-                                return <div key={anml.id}>{anml.name}</div>
+                                return <Link key={anml.id} to={`/animals/${anml.id}`}>{anml.name}</Link>
                             })
                         }
                     </section>
