@@ -9,6 +9,7 @@ import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import OwnerRepository from "../../repositories/OwnerRepository"
 import "./AnimalList.css"
 import "./cursor.css"
+import AnimalCaretakerRepository from "../../repositories/AnimalCaretakerRepository"
 
 export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
@@ -26,7 +27,7 @@ export const AnimalListComponent = (props) => {
 
     useEffect(() => {
         OwnerRepository.getAllCustomers().then(updateOwners)
-        OwnerRepository.getAllEmployees().then(updateCaretakers)
+        AnimalCaretakerRepository.getAll().then(updateCaretakers)
         AnimalOwnerRepository.getAll().then(setAnimalOwners)
         syncAnimals()
     }, [])
