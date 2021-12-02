@@ -56,20 +56,16 @@ export const AnimalListComponent = (props) => {
     const currentAnimalOwner = () => {
         const user = getCurrentUser()
 
-        const animalArray = animals.filter((anml) => {
-            let boolean = false
-            for (const animalOwner of anml.animalOwners) {
-                if (isEmployee === false && animalOwner.userId === user.id) {
-                    boolean = true
+        const newAnimalArray = animals.filter((animal) => {
+            for (const animalOwner of animal.animalOwners) {
+                if (animalOwner.userId === user.id) {
+
+                    return true
                 }
             }
-            return boolean
-        }
-        )
-        return animalArray
+        })
+        return newAnimalArray
     }
-
-
 
     return (
         <>
