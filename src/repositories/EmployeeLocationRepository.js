@@ -8,6 +8,7 @@ export default {
             `${Settings.remoteURL}/employeeLocations`,
             "POST",
             JSON.stringify(newEmpLocation)
+            
         )
     },
     async getAll() {
