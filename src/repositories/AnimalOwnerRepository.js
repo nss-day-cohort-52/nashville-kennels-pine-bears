@@ -48,6 +48,9 @@ export default {
         })
         return await e.json()
     },
+    async checkCurrentAssignment(userId, animalId) {
+        return await fetchIt(`${Settings.remoteURL}/animalOwners?userId=${userId}&animalId=${animalId}`)
+    },
     async getAll() {
         const e = await fetch(`${Settings.remoteURL}/animalOwners?_expand=user&user.employee=false&_expand=animal`)
         return await e.json()

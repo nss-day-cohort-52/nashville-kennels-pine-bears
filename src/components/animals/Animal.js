@@ -21,7 +21,6 @@ export const Animal = ({ animal, syncAnimals,
     const history = useHistory()
     const { animalId } = useParams()
     const { resolveResource, resource: currentAnimal } = useResourceResolver()
-    const [users, setUsers] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
@@ -40,11 +39,6 @@ export const Animal = ({ animal, syncAnimals,
             registerCaretakers(caretakers)
         }
     }, [caretakers])
-
-    useEffect(() => {
-        OwnerRepository.getAll()
-            .then(setUsers)
-    }, [])
 
     const getPeople = () => {
         if ("id" in currentAnimal) {
@@ -96,6 +90,32 @@ export const Animal = ({ animal, syncAnimals,
         }
     }, [animalId])
 
+    const assignNewCaretaker = (e) => {
+        e.persist()
+        AnimalCaretakerRepository.checkCurrentAssignment(parseInt(e.target.value), currentAnimal.id).then(data => {
+            if (data.length > 0) {
+                window.alert("That caretaker is already assigned to this animal!")
+            }
+            else {
+                AnimalCaretakerRepository
+                    .assignCaretaker(currentAnimal.id, parseInt(e.target.value))
+                    .then(syncAnimals)
+            }
+        })
+    }
+    const assignNewOwner = (e) => {
+        e.persist()
+        AnimalOwnerRepository.checkCurrentAssignment(parseInt(e.target.value), currentAnimal.id).then(data => {
+            if (data.length > 0) {
+                window.alert("That owner is already assigned to this animal!")
+            }
+            else {
+                AnimalOwnerRepository
+                    .assignOwner(currentAnimal.id, parseInt(e.target.value))
+                    .then(syncAnimals)
+            }
+        })
+    }
 
     return (
         <>
@@ -140,11 +160,7 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="caretaker"
                                         className="form-control small"
-                                        onChange={(e) =>
-                                            AnimalCaretakerRepository
-                                                .assignCaretaker(currentAnimal.id, parseInt(e.target.value))
-                                                .then(syncAnimals)
-                                        } >
+                                        onChange={assignNewCaretaker} >
                                         <option value="">
                                             Select {myCaretakers.length === 1 ? "another" : "an"} caretaker
                                         </option>
@@ -170,13 +186,7 @@ export const Animal = ({ animal, syncAnimals,
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
-                                        onChange={(evt) => {
-                                            AnimalOwnerRepository
-                                                .assignOwner(
-                                                    currentAnimal.id,
-                                                    parseInt(evt.target.value))
-                                                .then(getPeople)
-                                        }} >
+                                        onChange={assignNewOwner} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner
                                         </option>
