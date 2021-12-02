@@ -14,6 +14,7 @@ export const AnimalListComponent = (props) => {
     const [animals, petAnimals] = useState([])
     const [animalOwners, setAnimalOwners] = useState([])
     const [owners, updateOwners] = useState([])
+    const [isEmployee, setAuth] = useState(false)
     const [caretakers, updateCaretakers] = useState([])
     const [currentAnimal, setCurrentAnimal] = useState({ treatments: [] })
     const { getCurrentUser } = useSimpleAuth()
@@ -23,6 +24,10 @@ export const AnimalListComponent = (props) => {
     const syncAnimals = () => {
         AnimalRepository.getAll().then(data => petAnimals(data))
     }
+
+    useEffect(() => {
+        setAuth(getCurrentUser().employee)
+    })
 
     useEffect(() => {
         OwnerRepository.getAllCustomers().then(updateOwners)
@@ -48,10 +53,23 @@ export const AnimalListComponent = (props) => {
         return () => window.removeEventListener("keyup", handler)
     }, [toggleDialog, modalIsOpen])
 
+    const currentAnimalOwner = () => {
+        const user = getCurrentUser()
+
+        const newAnimalArray = animals.filter((animal) => {
+            for (const animalOwner of animal.animalOwners) {
+                if (animalOwner.userId === user.id) {
+
+                    return true
+                }
+            }
+        })
+        return newAnimalArray
+    }
 
     return (
         <>
-            <AnimalDialog toggleDialog={toggleDialog} animal={currentAnimal} />
+            <AnimalDialog toggleDialog={toggleDialog} animal={currentAnimal} setCurrentAnimal={setCurrentAnimal} />
 
             {
                 getCurrentUser().employee
@@ -71,15 +89,27 @@ export const AnimalListComponent = (props) => {
 
             <ul className="animals">
                 {
-                    animals.map(anml =>
-                        <Animal key={`animal--${anml.id}`} animal={anml}
-                            animalOwners={animalOwners}
-                            owners={owners}
-                            caretakers={caretakers}
-                            syncAnimals={syncAnimals}
-                            setAnimalOwners={setAnimalOwners}
-                            showTreatmentHistory={showTreatmentHistory}
-                        />)
+                    getCurrentUser().employee ?
+
+                        animals.map(anml =>
+                            <Animal key={`animal--${anml.id}`} animal={anml}
+                                animalOwners={animalOwners}
+                                owners={owners}
+                                syncAnimals={syncAnimals}
+                                setAnimalOwners={setAnimalOwners}
+                                showTreatmentHistory={showTreatmentHistory}
+                            />)
+
+                        :
+
+                        currentAnimalOwner().map(anml =>
+                            <Animal key={`animal--${anml.id}`} animal={anml}
+                                animalOwners={animalOwners}
+                                owners={owners}
+                                syncAnimals={syncAnimals}
+                                setAnimalOwners={setAnimalOwners}
+                                showTreatmentHistory={showTreatmentHistory}
+                            />)
                 }
             </ul>
         </>
