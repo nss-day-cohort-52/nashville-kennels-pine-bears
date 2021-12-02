@@ -1,5 +1,6 @@
-import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom";
+import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import "./SearchResults.css"
 import { Link, useParams } from "react-router-dom"
 import LocationRepository from "../../repositories/LocationRepository";
@@ -9,14 +10,25 @@ import LocationRepository from "../../repositories/LocationRepository";
 export default () => {
     const location = useLocation()
     const { employeeId, locationId, animalId } = useParams()
+    const [isEmployee, setAuth] = useState(false)
+    const { getCurrentUser } = useSimpleAuth()
 
+
+    useEffect(() => {
+        setAuth(getCurrentUser().employee)
+    },[])
+    
     const displayAnimals = () => {
-        if (location.state?.animals.length) {
+        if (location.state?.animals.length && isEmployee) {
             return (
                 <React.Fragment>
                     <h2>Matching Animals</h2>
                     <section className="animals">
-                        Display matching animals
+                        {
+                            location.state?.animals.map(anml => {
+                                return <div key={anml.id}>{anml.name}</div>
+                            })
+                        }
                     </section>
                 </React.Fragment>
             )

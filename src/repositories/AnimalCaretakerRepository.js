@@ -1,3 +1,4 @@
+import { fetchIt } from "./Fetch"
 import Settings from "./Settings"
 
 export default {
@@ -32,6 +33,9 @@ export default {
             "body": JSON.stringify({ animalId, userId })
         })
         return await e.json()
+    },
+    async checkCurrentAssignment(userId, animalId) {
+        return await fetchIt(`${Settings.remoteURL}/animalCaretakers?userId=${userId}&animalId=${animalId}`)
     },
     async getAll() {
         const e = await fetch(`${Settings.remoteURL}/animalCaretakers?_expand=user&_expand=animal`)
