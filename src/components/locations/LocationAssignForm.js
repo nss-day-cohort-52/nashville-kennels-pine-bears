@@ -39,18 +39,18 @@ export const LocationAssignForm = () => {
             }
 
             {
-                
+
                 EmployeeLocationRepository.checkCurrentAssignment(empId, locationId).then((data) => {
                     if (data.length > 0) {
                         window.alert("Employee is already assigned to this location")
                     } else {
                         EmployeeLocationRepository.addNewEmployeeLocation(empLocation)
                             .then(() => { history.push("/locations") })
-                        
+
                     }
                 })
-            
-        }
+
+            }
 
         }
     }
@@ -89,19 +89,8 @@ export const LocationAssignForm = () => {
                 </select>
             </div>
             <button type="submit"
-                // onClick=
-                // {
-                //         (evt) => {
-                //         EmployeeLocationRepository.checkCurrentAssignment(empId, locationId).then((data) => {
-                //             if (data.length > 0) {
-                //                 window.alert("Employee is already assigned to this location")
-                //             } else {
-                //                 constructNewEmployeeLocation(evt)
-                //             }
-                //         })
-                //     }
-                // }
-                onClick={(evt) => {constructNewEmployeeLocation(evt)}}
+
+                onClick={constructNewEmployeeLocation}
                 className="btn btn-primary"> Assign </button>
         </form>
     )
