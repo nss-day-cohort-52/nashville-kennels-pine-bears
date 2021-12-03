@@ -171,7 +171,7 @@ export const Animal = ({ animal, syncAnimals,
                                     : null
                             }
 
-                            <h6>Owners</h6>
+                            <h6>Owner(s)</h6>
                             <span className="small">
                                 {
                                     myOwners.map(o => {

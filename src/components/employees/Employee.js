@@ -6,6 +6,7 @@ import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import person from "./person.png"
 import "./Employee.css"
+import AnimalRepository from "../../repositories/AnimalRepository";
 
 
 export default ({ employee, syncEmployees }) => {
@@ -15,6 +16,7 @@ export default ({ employee, syncEmployees }) => {
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
     const [isEmployee, setAuth] = useState(false)
+    const [animals, setAnimals] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
@@ -33,6 +35,28 @@ export default ({ employee, syncEmployees }) => {
         }
         resolveResource(location, locationId, LocationRepository.get)
     }, [])
+
+    useEffect(() => {
+        AnimalRepository.getAll()
+            .then(setAnimals)
+    }, [])
+
+
+    const displayTreatmentCount = () => {
+        const treatArr = []
+        for (const animal of animals) {
+            for (const caretaker of animal.animalCaretakers) {
+                for (const treatment of animal.treatments) {
+                    if (treatment.animalId === caretaker.animalId && caretaker.userId === resource.id) {
+                        treatArr.push(treatment)
+                    }
+                }
+            }
+        }
+        return treatArr
+    }
+
+    const arrOfTreatments = displayTreatmentCount()
 
     return (
         <article className={classes}>
@@ -55,28 +79,26 @@ export default ({ employee, syncEmployees }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length ? resource.animals?.length : 0} {resource.animals?.length < 2 ? "animal" : "animals"}
+                                Caring for {resource.animals?.length ? resource.animals?.length : 0} {resource.animals?.length > 1 || resource.animals?.length === 0 ? "animals" : "animal"}
                             </section>
                             <section>
-                                Working on unknown treatments
+                                Treatment count: {arrOfTreatments.length ? arrOfTreatments.length : 0} {arrOfTreatments.length > 1 || arrOfTreatments.length === 0 ? "treatments" : "treatment"}
                             </section>
                             <section>
+                                Works at
                                 {
                                     resource.locations?.length > 0
                                         ?
                                         resource.locations?.map((l) => {
                                             return <Link key={l.id} className="employee-location"
-                                                to={`/locations/${l.location.id}`}>Works at: {l.location.name} </Link>
+                                                to={`/locations/${l.location.id}`}> {l.location.name} </Link>
                                         })
-                                        : <div>Works at: <span style={{ color: "red" }}>UNASSIGNED</span></div>
+                                        : <div>Works at <span style={{ color: "red" }}>UNASSIGNED</span></div>
                                 }
                             </section>
                         </>
                         : ""
                 }
-
-
-
                 {
                     isEmployee
                         ? <button className="btn--fireEmployee" onClick={(evt) => {
@@ -86,9 +108,7 @@ export default ({ employee, syncEmployees }) => {
                         }}>Fire</button>
                         : ""
                 }
-
             </section>
-
         </article>
     )
 }
