@@ -3,6 +3,8 @@ import {Link, useLocation } from "react-router-dom";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 
 import "./SearchResults.css"
+import { useParams } from "react-router-dom"
+import LocationRepository from "../../repositories/LocationRepository";
 
 
 
