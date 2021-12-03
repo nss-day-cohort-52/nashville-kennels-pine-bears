@@ -41,7 +41,11 @@ export default () => {
                 <React.Fragment>
                     <h2>Matching Employees</h2>
                     <section className="employees">
-                        Display matching employees
+                        {
+                            location.state?.employees.map(emp => {
+                                return <Link key={emp.id} to={`/employees/${emp.id}`}>{emp.name}</Link>
+                            })
+                        }
                     </section>
                 </React.Fragment>
             )
