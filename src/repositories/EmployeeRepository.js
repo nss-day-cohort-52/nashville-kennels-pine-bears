@@ -5,17 +5,21 @@ import { fetchIt } from "./Fetch"
 export default {
     async get(id) {
         const userLocations = await fetchIt(`${Settings.remoteURL}/employeeLocations?userId=${id}&_expand=location&_expand=user`)
-        return await fetchIt(`${Settings.remoteURL}/animalCaretakers?userId=${id}&_expand=animal&_expand=user`)
+        const userAnimalCare = await fetchIt(`${Settings.remoteURL}/animalCaretakers?userId=${id}&_expand=animal&_expand=user`)
+        return await fetchIt(`${Settings.remoteURL}/users?employee=true&userId=${id}`)
             .then(data => {
                 // debugger
                 if (userLocations.length > 0) {
                     const userWithRelationships = userLocations[0].user
                     userWithRelationships.locations = userLocations
-                    userWithRelationships.animals = data
+                    userWithRelationships.animals = userAnimalCare
                     return userWithRelationships
                 }
+                else if (userAnimalCare.length === 0) {
+                    return data
+                }
                 else {
-                    const userWithRelationships = data[0].user
+                    const userWithRelationships = userAnimalCare[0].user
                     userWithRelationships.animals = data
                     return userWithRelationships
                 }

@@ -55,7 +55,7 @@ export default ({ employee, syncEmployees }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length} {resource.animals?.length < 2 ? "animal" : "animals"}
+                                Caring for {resource.animals?.length ? resource.animals?.length : 0} {resource.animals?.length < 2 ? "animal" : "animals"}
                             </section>
                             <section>
                                 Working on unknown treatments
