@@ -15,12 +15,12 @@ export default {
                     userWithRelationships.animals = userAnimalCare
                     return userWithRelationships
                 }
-                else if (userAnimalCare.length === 0) {
+                else if (userAnimalCare.length === 0 && userLocations.length === 0) {
                     return data
                 }
                 else {
                     const userWithRelationships = userAnimalCare[0].user
-                    userWithRelationships.animals = data
+                    userWithRelationships.animals = userAnimalCare
                     return userWithRelationships
                 }
             })
