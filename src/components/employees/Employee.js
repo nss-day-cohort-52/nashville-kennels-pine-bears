@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import LocationRepository from "../../repositories/LocationRepository";
-import AnimalRepository from "../../repositories/AnimalRepository";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import person from "./person.png"
@@ -10,10 +9,9 @@ import "./Employee.css"
 
 
 export default ({ employee, syncEmployees }) => {
-    const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({})
     const [classes, defineClasses] = useState("card employee")
-    const { employeeId, locationId, animalId } = useParams()
+    const { employeeId, locationId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
     const [isEmployee, setAuth] = useState(false)
@@ -51,23 +49,27 @@ export default ({ employee, syncEmployees }) => {
                                 }}>
                                 {resource.name}
                             </Link>
-
                     }
                 </h5>
                 {
                     employeeId
                         ? <>
                             <section>
-                                Caring for {resource.animals?.length} animals
+                                Caring for {resource.animals?.length ? resource.animals?.length : 0} {resource.animals?.length < 2 ? "animal" : "animals"}
                             </section>
                             <section>
                                 Working on unknown treatments
                             </section>
                             <section>
-                                Works at {resource.locations?.map((l) => {
-                                    return <Link className="employee-location"
-                                        to={`/locations/${l.location.id}`}>{l.location.name} </Link>
-                                })}
+                                {
+                                    resource.locations?.length > 0
+                                        ?
+                                        resource.locations?.map((l) => {
+                                            return <Link key={l.id} className="employee-location"
+                                                to={`/locations/${l.location.id}`}>Works at: {l.location.name} </Link>
+                                        })
+                                        : <div>Works at: <span style={{ color: "red" }}>UNASSIGNED</span></div>
+                                }
                             </section>
                         </>
                         : ""
