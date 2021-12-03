@@ -61,14 +61,14 @@ export default ({ employee, syncEmployees }) => {
                                 Working on unknown treatments
                             </section>
                             <section>
-                                Works at {
+                                {
                                     resource.locations?.length > 0
                                         ?
                                         resource.locations?.map((l) => {
                                             return <Link key={l.id} className="employee-location"
-                                                to={`/locations/${l.location.id}`}>{l.location.name} </Link>
+                                                to={`/locations/${l.location.id}`}>Works at: {l.location.name} </Link>
                                         })
-                                        : "UNASSIGNED"
+                                        : <div>Works at: <span style={{ color: "red" }}>UNASSIGNED</span></div>
                                 }
                             </section>
                         </>
